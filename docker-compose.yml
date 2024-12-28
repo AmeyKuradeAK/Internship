@@ -1,12 +1,28 @@
-version: "3"
+version: '3.8'
+
 services:
-  backend:
-    build:
-      context: ./backend  # Path to your backend directory
-    ports:
-      - "5000:5000"
   frontend:
     build:
-      context: ./frontend  # Path to your frontend directory
+      context: ./Frontend
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Expose frontend on localhost:3000
+    environment:
+      REACT_APP_KEYCLOAK_URL: http://keycloak:8080
+    depends_on:
+      - keycloak
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    ports:
+      - "8080:8080"  # Expose Keycloak on localhost:8080
+    command: start-dev  # Run Keycloak in development mode
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - keycloak_data:/opt/keycloak/data  # Mount Docker volume for persistent storage
+
+volumes:
+  keycloak_data:  # Named volume for persistent storage
+    driver: local  # Use local driver to store data on the host machine

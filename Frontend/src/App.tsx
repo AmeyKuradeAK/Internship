@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { initKeycloak, getKeycloak } from './keycloak';
+import Whiteboard from './components/Whiteboard';
 
 const App: React.FC = () => {
   const [keycloak, setKeycloak] = useState<any>(null);
@@ -44,8 +45,10 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <h1>Keycloak Authentication Complete</h1>
-      <p>User: {keycloak.tokenParsed?.preferred_username}</p>
+      <div>
+      <h1>Collaborative Whiteboard</h1>
+      <Whiteboard />
+    </div>
       <button onClick={handleLogout}>Logout</button>
     </div>
   );
